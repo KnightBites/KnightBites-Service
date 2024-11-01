@@ -2,7 +2,7 @@ const createError = require('http-errors');
 const express = require('express');
 const pgp = require('pg-promise')();
 
-const verifyEnv = (env, successMsg, erorrMsg) => {
+const verifyEnv = (env, successMsg, errorMsg) => {
   if (env === undefined) {
     console.log(errorMsg);
     exit(-1);
