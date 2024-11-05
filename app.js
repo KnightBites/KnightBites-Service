@@ -5,7 +5,7 @@ const pgp = require('pg-promise')();
 const verifyEnv = (env, successMsg, errorMsg) => {
   if (env === undefined) {
     console.log(errorMsg);
-    exit(-1);
+    process.exit(-1);
   } else {
     console.log(successMsg);
     return env;
@@ -25,10 +25,20 @@ const app = express();
 const router = express.Router();
 app.use(express.json());
 
+//////////////////////
+// Dish Interactions
+////
 router.get('/', readHelloMessage);
 router.get('/diningfood', readDiningFoods);
+router.get('/diningfood/:foodname', readDiningFood);
 router.post('/diningfood', createDiningFood);
+router.put('/diningfood/:id', updateDiningFood);
 router.delete('/diningfood/:id', deleteDiningFood);
+//////////////////////
+// User Interactions
+////
+
+//////////////////////
 
 app.use(router);
 
@@ -41,12 +51,21 @@ function returnDataOr404(res, data) {
   }
 }
 
+const generateSQLFilter = params => {
+  let filterString = "";
+  for (let key in params) {
+    filterString += `${key}='${params[key]}' AND `;
+  }
+  filterString = filterString.slice(0, -5); // take off last AND
+  return filterString;
+};
+
 function readHelloMessage(req, res) {
   res.send('This is the KnightBites REST API! Usage: WIP');
 }
 
 function readDiningFoods(req, res, next) {
-  db.many('SELECT * FROM diningfood')
+  db.many(`SELECT * FROM diningfood ${(Object.keys(req.query).length) ? 'WHERE ' + generateSQLFilter(req.query) : ''}`)
     .then((data) => {
       res.send(data);
     })
@@ -56,7 +75,7 @@ function readDiningFoods(req, res, next) {
 }
 
 function readDiningFood(req, res, next) {
-  db.oneOrNone('SELECT * FROM diningfood WHERE id=${id}', req.params)
+  db.oneOrNone('SELECT * FROM diningfood WHERE foodname=${foodname}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -65,9 +84,12 @@ function readDiningFood(req, res, next) {
     });
 }
 
-// WIP
 function updateDiningFood(req, res, next) {
-  db.oneOrNone('UPDATE diningfood SET email=${body.email}, name=${body.name} WHERE id=${params.id} RETURNING id', req)
+  db.oneOrNone('UPDATE diningfood \
+                SET FoodName=${body.foodname}, DiningHall=${body.dininghall} \
+                MealTime=${body.mealtime}, Vegan=${body.vegan} \
+                Vegetarian=${body.vegetarian}, Halal=${body.halal} \
+                WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -76,9 +98,10 @@ function updateDiningFood(req, res, next) {
     });
 }
 
-// WIP
 function createDiningFood(req, res, next) {
-  db.one('INSERT INTO Player(email, name) VALUES (${email}, ${name}) RETURNING id', req.body)
+  db.one('INSERT INTO diningfood(foodname, dininghall, mealtime, vegan, vegetarian, halal) \
+          VALUES (${foodname}, ${dininghall}, ${mealtime}, ${vegan}, ${vegatarian}, ${halal}) \
+          RETURNING id', req.body)
     .then((data) => {
       res.send(data);
     })
