@@ -16,8 +16,9 @@ router.get('/dish/:id', readDiningFood);
 //////////////////////
 // User Profile Interactions
 ////
-const { createUser, updateUser, deleteUser, getUser } = require("./service_routes/user_services.js");
+const { createUser, updateUser, deleteUser, getUser, validateLogin } = require("./service_routes/user_services.js");
 router.post("/user", createUser);
+router.post("/user/validate", validateLogin);
 router.put("/user/:id", updateUser);
 router.delete("/user/:id", deleteUser);
 router.get("/user/:id", getUser);
