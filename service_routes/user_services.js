@@ -1,10 +1,9 @@
 const { db, returnDataOr404 } = require("../control.js");
-const md5 = require("md5");
 
 function createUser(req, res, next) {
   db.one('INSERT INTO userprofiles(Email, Username, UserPassword, veganRestriction, vegetarianRestriction, halalRestriction) \
           VALUES (${email}, ${username}, ${password}, ${vegan}, ${vegetarian}, ${halal}) \
-          RETURNING id', {...req.body, password: md5(req.body.password)})
+          RETURNING id', req.body)
     .then((data) => {
       res.send(data);
     })
