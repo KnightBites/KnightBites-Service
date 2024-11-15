@@ -13,11 +13,12 @@ function createUser(req, res, next) {
 }
 
 function validateLogin(req, res, next) {
-  db.one("SELECT id FROM userprofiles WHERE Username = ${username} AND UserPassword = ${hashedPassword}", req.body)
-    .then((data) => {
-      res.send({valid: true});
+  db.one("SELECT * FROM userprofiles WHERE Username = ${username} AND UserPassword = ${hashedPassword}", req.body)
+    .then(data => {
+      res.send({userData: {...data}, valid: true});
     })
-    .catch((err) => {
+    .catch(err => {
+      console.error(err);
       res.send({valid: false});
     });
 }
