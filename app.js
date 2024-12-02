@@ -1,3 +1,16 @@
+const welcomeMessage = `
+<p><code>GET    /dish           -- read all dishes</code></p>
+<p><code>GET    /dish/:id       -- read dish with given id</code></p>
+<p><code>POST   /user           -- create new user</code></p>
+<p><code>POST   /user/validate  -- validate user login</code></p>
+<p><code>PUT    /user/:id       -- update user with given id</code></p>
+<p><code>DELETE /user/:id       -- delete user with given id</code></p>
+<p><code>GET    /user/:id       -- read user with given id</code></p>
+<p><code>GET    /rating/:dishid -- read rating with given dish id</code></p>
+<p><code>PUT    /rating/:dishid -- update rating with given dish id</code></p>
+<p><code>POST   /rating         -- create a new rating</code></p>
+`;
+
 const createError = require('http-errors');
 const express = require('express');
 const app = express();
@@ -35,7 +48,7 @@ router.get('/', readHelloMessage);
 app.use(router);
 
 function readHelloMessage(req, res) {
-  res.send('This is the KnightBites REST API! Usage: WIP');
+  res.send('This is the KnightBites REST API! Usage:' + welcomeMessage);
 }
 
 module.exports = app;
