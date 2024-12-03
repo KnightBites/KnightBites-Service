@@ -38,8 +38,9 @@ router.get("/user/:id", getUser);
 //////////////////////
 // Ratings Interactions
 ////
-const { getRating, updateRating, createRating } = require("./service_routes/rating_services.js");
+const { getRating, updateRating, createRating, getComments } = require("./service_routes/rating_services.js");
 router.get("/rating/:dishid", getRating);
+router.get("/comments/:dishid", getComments);
 router.put("/rating/:dishid", updateRating);
 router.post("/rating", createRating);
 //////////////////////
