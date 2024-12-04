@@ -10,7 +10,10 @@ const generateSQLFilter = params => {
 };
 
 function readDiningFoods(req, res, next) {
-  db.many(`SELECT * FROM diningfood ${(Object.keys(req.query).length) ? 'WHERE ' + generateSQLFilter(req.query) : ''}`)
+  db.many(`SELECT diningfood.*, AVG(diningfoodratings.userrating) FROM diningfood 
+           LEFT JOIN diningfoodratings ON diningfood.id = diningfoodratings.foodid
+           ${(Object.keys(req.query).length) ? 'WHERE ' + generateSQLFilter(req.query) : ''} 
+           GROUP BY diningfood.id`)
     .then((data) => {
       res.send(data);
     })
