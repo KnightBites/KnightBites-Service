@@ -9,6 +9,7 @@ const welcomeMessage = `
 <p><code>GET    /rating/:dishid -- read rating with given dish id</code></p>
 <p><code>PUT    /rating/:dishid -- update rating with given dish id</code></p>
 <p><code>POST   /rating         -- create a new rating</code></p>
+<p><code>GET    /uppercrust     -- get all uppercrust related data</code></p>
 `;
 
 const createError = require('http-errors');
@@ -43,6 +44,13 @@ router.get("/rating/:dishid", getRating);
 router.get("/comments/:dishid", getComments);
 router.put("/rating/:dishid", updateRating);
 router.post("/rating", createRating);
+//////////////////////
+
+//////////////////////
+// Uppercurst Interactions 
+////
+const { getUppercrustIngredients } = require("./service_routes/uppercrust_services.js")
+router.get("/uppercrust", getUppercrustIngredients);
 //////////////////////
 
 router.get('/', readHelloMessage);
