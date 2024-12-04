@@ -48,7 +48,7 @@ function deleteUser(req, res, next) {
 }
 
 function getUser(req, res, next) {
-  db.oneOrNone('SELECT * FROM userprofiles WHERE id=${id}', req.params)
+  db.oneOrNone('SELECT id, email, username, veganrestriction, vegetarianrestriction, halalrestriction FROM userprofiles WHERE id=${id}', req.params)
     .then((data) => {
       returnDataOr404(res, data);
     })
