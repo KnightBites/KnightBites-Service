@@ -9,7 +9,9 @@ const welcomeMessage = `
 <p><code>GET    /rating/:dishid -- read rating with given dish id</code></p>
 <p><code>PUT    /rating/:dishid -- update rating with given dish id</code></p>
 <p><code>POST   /rating         -- create a new rating</code></p>
-<p><code>GET    /uppercrust     -- get all uppercrust related data</code></p>
+<p><code>GET    /uppercrust     -- get all uppercrust ingredient data</code></p>
+<p><code>POST   /uppercrust     -- put new sammy in the database</code></p>
+<p><code>GET    /prayer          -- get random prayer</code></p>
 `;
 
 const createError = require('http-errors');
@@ -49,9 +51,16 @@ router.post("/rating", createRating);
 //////////////////////
 // Uppercurst Interactions 
 ////
-const { getUppercrustIngredients } = require("./service_routes/uppercrust_services.js")
+const { getUppercrustIngredients, postUppercrustCreation } = require("./service_routes/uppercrust_services.js")
 router.get("/uppercrust", getUppercrustIngredients);
+router.post("/uppercrust", postUppercrustCreation);
 //////////////////////
+
+//////////////////////
+// Prayer Interactions 
+////
+const { getPrayer } = require("./service_routes/prayer_services.js");
+router.get("/prayer", getPrayer);
 
 router.get('/', readHelloMessage);
 app.use(router);
