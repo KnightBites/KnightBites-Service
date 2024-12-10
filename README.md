@@ -4,7 +4,7 @@ This is the service application for the CS 262 KnightBites project.
 
 The data service is hosted on Azure.
 
-Client Repo: [KnightBites-Cient](https://github.com/KnightBites/KnightBites-Client)
+Client Repo: [KnightBites-Client](https://github.com/KnightBites/KnightBites-Client)
 
 Project Repo: [KnightBites-Service](https://github.com/KnightBites/KnightBites-Project)
 
