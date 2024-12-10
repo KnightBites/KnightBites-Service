@@ -23,8 +23,8 @@ function getComments(req, res, next) {
 // NOTE: current_timestamp is PSQL's way of putting in the current time
 function updateRating(req, res, next) {
   db.oneOrNone("UPDATE diningfoodratings \
-                SET userrating=${body.userrating}, usercomment=${body.usercomment}, date=current_timestamp\
-                WHERE userid=${body.userid} AND foodid=${params.dishid}\
+                SET userrating=${body.userrating}, usercomment=${body.usercomment}, date=current_timestamp \
+                WHERE userid=${body.userid} AND foodid=${params.dishid} \
                 RETURNING userid", req)
     .then((data) => {
       returnDataOr404(res, data);

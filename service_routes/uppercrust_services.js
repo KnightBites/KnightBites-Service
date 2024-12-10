@@ -10,5 +10,17 @@ function getUppercrustIngredients(req, res, next) {
     );
 }
 
-module.exports = { getUppercrustIngredients };
+function postUppercrustCreation(req, res, next) {
+  db.one('INSERT INTO uppercrustcreations(creator, sandwichname, comment, date, sammy) \
+           VALUES(${creator}, ${sandwichname}, ${comment}, current_timestamp, ${sammy}) \
+           RETURNING sandwichname', req.body)
+    .then(
+      data => res.send(data)
+    )
+    .catch(
+      err => next(err)
+    );
+}
+
+module.exports = { getUppercrustIngredients, postUppercrustCreation };
 
