@@ -25,9 +25,10 @@ function validateLogin(req, res, next) {
 
 function updateUser(req, res, next) {
   db.oneOrNone('UPDATE userprofiles \
-                SET Email=${body.email}, Username=${body.username}, \
-                UserPassword=${body.password}, veganRestriction=${body.vegan}, \
-                vegetarianRestriction=${body.vegetarian}, \
+                SET Email=${body.email}, Username=${body.username}, ' +
+               (req.body.hasOwnProperty("password") ? 'UserPassword=${body.password}, ' : '') + 
+               'veganRestriction=${body.restrictions.vegan}, \
+                vegetarianRestriction=${body.restrictions.vegetarian}, halalRestriction=${body.restrictions.halal}\
                 WHERE id=${params.id} RETURNING id', req)
     .then((data) => {
       returnDataOr404(res, data);
