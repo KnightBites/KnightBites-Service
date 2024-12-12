@@ -22,5 +22,15 @@ function postUppercrustCreation(req, res, next) {
     );
 }
 
-module.exports = { getUppercrustIngredients, postUppercrustCreation };
+function getUppercrustCreations(req, res, next) {
+  db.many("SELECT * FROM uppercrustcreations")
+    .then(
+      data => res.send(data)
+    )
+    .catch(
+      err => next(err)
+    )
+}
+
+module.exports = { getUppercrustIngredients, postUppercrustCreation, getUppercrustCreations };
 
