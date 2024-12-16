@@ -1,4 +1,5 @@
 const { db, returnDataOr404 } = require("../control.js");
+const { censorText } = require("../profanity-filter.js");
 
 function getRating(req, res, next) {
   db.one("SELECT AVG(userrating) FROM diningfoodratings WHERE foodid = ${dishid}", req.params)
@@ -25,7 +26,7 @@ function updateRating(req, res, next) {
   db.oneOrNone("UPDATE diningfoodratings \
                 SET userrating=${body.userrating}, usercomment=${body.usercomment}, date=current_timestamp \
                 WHERE userid=${body.userid} AND foodid=${params.dishid} \
-                RETURNING userid", req)
+                RETURNING userid", {...req, body: {...req.body, usercomment: censorText(req.body.usercomment)}})
     .then((data) => {
       returnDataOr404(res, data);
     })
@@ -37,7 +38,7 @@ function updateRating(req, res, next) {
 function createRating(req, res, next) {
   db.one('INSERT INTO diningfoodratings(userid, foodid, userrating, usercomment, date) \
           VALUES (${userid}, ${foodid}, ${userrating}, ${usercomment}, current_timestamp) \
-          RETURNING userid', req.body)
+          RETURNING userid', {...req.body, usercomment: censorText(req.body.usercomment)})
     .then((data) => {
       res.send(data);
     })
